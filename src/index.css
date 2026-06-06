@@ -1,0 +1,310 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@variant dark (.dark &);
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+/* High Density Global Style Theme Overrides: Dark Theme */
+.dark body {
+  background-color: #0F1115 !important;
+  color: #E2E8F0 !important;
+}
+
+/* Target all card panels and sections in dark mode */
+.dark .bg-white,
+.dark .bg-slate-[50px],
+.dark .bg-slate-50,
+.dark [class*="bg-white"],
+.dark [class*="bg-slate-900"],
+.dark [class*="bg-[#161B27]"],
+.dark [class*="bg-[#161b27]"],
+.dark [class*="bg-[#111827]"],
+.dark [class*="bg-[#1C2333]"],
+.dark [class*="bg-[#1c2333]"] {
+  /* Don't override badge backgrounds or inline tags that are specific color transparent utilities */
+  &:not(.bg-red-50):not(.bg-green-50):not(.bg-emerald-50):not(.bg-blue-50):not(.bg-amber-50):not(.bg-purple-50):not(.bg-orange-50):not(.bg-indigo-50):not([class*="/10"]):not([class*="/20"]):not(.bg-emerald-500):not(.bg-blue-500):not(.bg-red-500):not(.bg-indigo-600):not(.bg-indigo-500):not(.bg-green-500):not(.bg-amber-500):not(.bg-yellow-500):not(.bg-transparent):not(.bg-gradient-to-tr) {
+    background-color: #1A202C !important;
+  }
+}
+
+/* Force borders in dark mode to the cohesive `#2D3748` */
+.dark .border,
+.dark .border-t,
+.dark .border-b,
+.dark .border-l,
+.dark .border-r,
+.dark [class*="border-gray-"],
+.dark [class*="border-slate-"],
+.dark [class*="border-zinc-"],
+.dark [class*="border-[#1F2937]"],
+.dark [class*="border-gray-800"] {
+  &:not(.border-transparent):not(.border-indigo-500):not(.border-indigo-600):not(.border-emerald-500):not(.border-green-500):not(.border-red-500):not(.border-blue-500):not(.border-yellow-500) {
+    border-color: #2D3748 !important;
+  }
+}
+
+/* Force high density divider components */
+.dark .divide-y > :not([hidden]) ~ :not([hidden]),
+.dark .divide-x > :not([hidden]) ~ :not([hidden]) {
+  border-color: #2D3748 !important;
+}
+
+/* Spacing optimization for cards in dark mode: decrease default padding a tiny bit and increase shadow precision */
+.dark .shadow-sm,
+.dark .shadow-md,
+.dark .shadow {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3) !important;
+}
+
+/* --- LIGHT THEME OVERRIDES (WHITE AND LIGHT SKY BLUE ENTIRELY) --- */
+html:not(.dark) body {
+  background-color: #F0F6FC !important;
+  color: #1E293B !important;
+}
+
+/* Main pages parent container background override */
+html:not(.dark) div[class*="bg-gray-50/50"],
+html:not(.dark) div[class*="bg-[#0c0f16]"],
+html:not(.dark) div[class*="bg-[#0f0f16]"],
+html:not(.dark) div[class*="bg-[#0F1115]"],
+html:not(.dark) div[class*="bg-[#0f1115]"],
+html:not(.dark) .bg-\[\#0F1115\],
+html:not(.dark) .bg-\[\#0f1115\],
+html:not(.dark) .bg-gray-50\/50,
+html:not(.dark) .min-h-screen {
+  background-color: #F0F6FC !important;
+}
+
+/* Every card, container, and layout block with hardcoded background needs to be flat white with sky borders */
+html:not(.dark) .bg-white,
+html:not(.dark) .bg-slate-50,
+html:not(.dark) .bg-gray-50,
+html:not(.dark) .bg-gray-100,
+html:not(.dark) .bg-\[\#14181F\],
+html:not(.dark) .bg-\[\#14181f\],
+html:not(.dark) .bg-\[\#101318\],
+html:not(.dark) .bg-\[\#1A202C\],
+html:not(.dark) .bg-\[\#1a202c\],
+html:not(.dark) .bg-\[\#161B27\],
+html:not(.dark) .bg-\[\#161b27\],
+html:not(.dark) .bg-\[\#111827\],
+html:not(.dark) .bg-\[\#1C2333\],
+html:not(.dark) .bg-\[\#1c2333\],
+html:not(.dark) .bg-\[\#192135\],
+html:not(.dark) [class*="bg-[#14181F]"],
+html:not(.dark) [class*="bg-[#14181f]"],
+html:not(.dark) [class*="bg-[#101318]"],
+html:not(.dark) [class*="bg-[#1A202C]"],
+html:not(.dark) [class*="bg-[#1a202c]"],
+html:not(.dark) [class*="bg-[#161B27]"],
+html:not(.dark) [class*="bg-[#161b27]"],
+html:not(.dark) [class*="bg-[#111827]"],
+html:not(.dark) [class*="bg-[#1C2333]"],
+html:not(.dark) [class*="bg-[#1c2333]"],
+html:not(.dark) .bg-slate-900,
+html:not(.dark) .bg-slate-800,
+html:not(.dark) .bg-slate-[850px],
+html:not(.dark) [class*="bg-[#192135]"] {
+  /* Guard accent primary colored elements (buttons, badges, trackers) from being converted to white */
+  &:not(.bg-indigo-600):not(.bg-indigo-505):not(.bg-indigo-500):not(.bg-blue-600):not(.bg-blue-505):not(.bg-blue-500):not(.bg-sky-600):not(.bg-sky-505):not(.bg-sky-500):not(.bg-emerald-600):not(.bg-emerald-500):not(.bg-green-600):not(.bg-red-500):not(.bg-red-600):not(.bg-yellow-500):not(.bg-amber-500):not(.bg-transparent):not(.bg-gradient-to-tr) {
+    background-color: #FFFFFF !important;
+  }
+}
+
+/* Exclude active tabs from background overriding to preserve active tab color styling */
+html:not(.dark) button[class*="bg-blue-650"],
+html:not(.dark) button[class*="bg-blue-600"],
+html:not(.dark) button[class*="bg-indigo-600"],
+html:not(.dark) .bg-blue-600,
+html:not(.dark) .bg-indigo-600 {
+  background-color: #0284C7 !important;
+  color: #FFFFFF !important;
+}
+
+/* Re-map hardcoded dark buttons/actions like `#0F1729` directly to modern brand Sky Blue buttons in light mode */
+html:not(.dark) .bg-\[\#0F1729\],
+html:not(.dark) .bg-\[\#0f1729\],
+html:not(.dark) .bg-[#0F1729],
+html:not(.dark) .bg-[#0f1729],
+html:not(.dark) [class*="bg-[#0F1729]"],
+html:not(.dark) [class*="bg-[#0f1729]"],
+html:not(.dark) .bg-slate-950,
+html:not(.dark) .bg-slate-900 {
+  &:not(.nav-item-el):not(aside) {
+    background-color: #0284C7 !important;
+    color: #FFFFFF !important;
+    border-color: #0284C7 !important;
+    &:hover {
+      background-color: #0369A1 !important;
+    }
+  }
+}
+
+/* Ensure ALL borders style to cohesive Light Sky palette rather than dark grey in light mode */
+html:not(.dark) .border,
+html:not(.dark) .border-t,
+html:not(.dark) .border-b,
+html:not(.dark) .border-l,
+html:not(.dark) .border-r,
+html:not(.dark) [class*="border-[#"],
+html:not(.dark) [class*="border-gray-"],
+html:not(.dark) [class*="border-slate-"] {
+  &:not(.border-transparent):not(.border-indigo-500):not(.border-indigo-600):not(.border-blue-500):not(.border-blue-600):not(.border-sky-500):not(.border-emerald-500):not(.border-green-500):not(.border-red-500):not(.border-dashed):not(.border-2) {
+    border-color: #D1E2F4 !important;
+  }
+}
+
+/* Table element states in light mode */
+html:not(.dark) thead tr,
+html:not(.dark) thead th {
+  background-color: #EBF5FF !important; /* Elegant light-sky header index */
+  color: #1E293B !important;
+  border-bottom: 2px solid #C2D5EC !important;
+}
+html:not(.dark) tbody tr:hover,
+html:not(.dark) [class*="hover:bg-blue-50"]:hover {
+  background-color: #F0F7FF !important; /* Active sky hover highlights */
+}
+
+/* General Headings, Spans, Paragraphs text color consistency in light mode card containers */
+html:not(.dark) h2,
+html:not(.dark) h3,
+html:not(.dark) h4,
+html:not(.dark) h5,
+html:not(.dark) p,
+html:not(.dark) span {
+  /* Guard specific text states from being overridden */
+  &:not(.text-white):not(.text-indigo-400):not(.text-indigo-500):not(.text-indigo-600):not(.text-blue-500):not(.text-blue-600):not(.text-sky-400):not(.text-sky-500):not(.text-sky-600):not(.text-emerald-400):not(.text-emerald-555):not(.text-emerald-600):not(.text-green-500):not(.text-green-600):not(.text-red-400):not(.text-red-500):not(.text-red-600):not(.text-amber-500):not(.text-amber-600):not(.text-indigo-300):not(.text-rose-500) {
+    color: #1E293B !important;
+  }
+}
+
+/* Fix text-color contrast inside light cards where hardcoded white colors cause visibility drop */
+html:not(.dark) .text-white,
+html:not(.dark) .text-slate-100,
+html:not(.dark) .text-gray-100,
+html:not(.dark) .text-gray-200,
+html:not(.dark) .text-gray-300,
+html:not(.dark) [class*="text-slate-200"],
+html:not(.dark) [class*="text-gray-300"] {
+  &:not(button):not(.bg-indigo-600):not(.bg-indigo-50):not(.bg-indigo-100):not(.bg-blue-50):not(.bg-blue-100):not(.bg-indigo-500):not(.bg-blue-600):not(.bg-blue-500):not(.bg-sky-600):not(.bg-sky-500):not(.bg-emerald-600):not(.bg-emerald-500):not(.bg-green-600):not(.bg-red-500):not(.bg-red-600):not(.bg-amber-500):not(.bg-orange-500):not([class*="bg-"]):not(span[class*="text-["]) {
+    color: #1E293B !important;
+  }
+}
+
+/* Input Fields in light mode (no dark blocks for Search/Inputs) */
+html:not(.dark) input,
+html:not(.dark) select,
+html:not(.dark) textarea {
+  background-color: #FFFFFF !important;
+  color: #1E293B !important;
+  border: 1px solid #C2D5EC !important;
+}
+html:not(.dark) input::placeholder {
+  color: #94A3B8 !important;
+}
+
+/* Sidebar Specific Light overrides */
+html:not(.dark) aside {
+  background-color: #FFFFFF !important;
+  border-right: 1px solid #D1E2F4 !important;
+}
+html:not(.dark) aside h3 {
+  color: #0284C7 !important; /* Premium Blue section navigation header */
+}
+html:not(.dark) aside button.nav-item-el:not([class*="bg-sky-100"]) {
+  color: #475569 !important;
+  &:hover {
+    background-color: #EBF5FF !important;
+    color: #0284C7 !important;
+  }
+}
+
+/* Top header and floating menus */
+html:not(.dark) header {
+  background-color: #FFFFFF !important;
+  border-bottom: 1px solid #D1E2F4 !important;
+}
+html:not(.dark) [class*="absolute"][class*="bg-white"] {
+  background-color: #FFFFFF !important;
+  border: 1px solid #C2D5EC !important;
+}
+
+/* --- THEME FIXES FOR HOVER STATES ON DARK THEME --- */
+.dark .hover\:text-blue-950:hover {
+  color: #93C5FD !important; /* Light sky blue on dark mode hover (no dark text on dark bg) */
+}
+.dark .hover\:text-amber-950:hover {
+  color: #FCD34D !important;
+}
+.dark .hover\:text-purple-950:hover {
+  color: #D8B4FE !important;
+}
+.dark .hover\:text-rose-950:hover {
+  color: #FDA4AF !important;
+}
+.dark [class*="hover:text-gray-950"]:hover,
+.dark [class*="hover:text-black"]:hover {
+  color: #FFFFFF !important;
+}
+.dark [class*="hover:bg-gray-50"]:hover,
+.dark [class*="hover:bg-white"]:hover {
+  background-color: #2D3748 !important; /* Keep it dark on dark mode hover, do not flash bright white! */
+  color: #FFFFFF !important;
+}
+
+/* Customize scrollbars for High Density design feel */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #14181F;
+}
+::-webkit-scrollbar-thumb {
+  background: #2D3748;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #4f46e5;
+}
+
+/* --- RECHARTS TOOLTIP LIGHT AND DARK SYNCS --- */
+html:not(.dark) .recharts-default-tooltip,
+html:not(.dark) [class*="recharts-default-tooltip"],
+html:not(.dark) .recharts-tooltip-wrapper .recharts-default-tooltip {
+  background-color: #FFFFFF !important;
+  border: 1px solid #C2D5EC !important;
+  border-radius: 6px !important;
+  color: #1E293B !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  padding: 8px 12px !important;
+}
+html:not(.dark) .recharts-default-tooltip .recharts-tooltip-item,
+html:not(.dark) .recharts-default-tooltip .recharts-tooltip-item *,
+html:not(.dark) .recharts-default-tooltip .recharts-tooltip-label,
+html:not(.dark) .recharts-default-tooltip span {
+  color: #1E293B !important;
+}
+
+.dark .recharts-default-tooltip,
+.dark [class*="recharts-default-tooltip"],
+.dark .recharts-tooltip-wrapper .recharts-default-tooltip {
+  background-color: #1E293B !important;
+  border: 1px solid #334155 !important;
+  border-radius: 6px !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+  padding: 8px 12px !important;
+}
+.dark .recharts-default-tooltip .recharts-tooltip-item,
+.dark .recharts-default-tooltip .recharts-tooltip-item *,
+.dark .recharts-default-tooltip .recharts-tooltip-label,
+.dark .recharts-default-tooltip span {
+  color: #FFFFFF !important;
+}
+
