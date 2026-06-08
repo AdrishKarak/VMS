@@ -1,19 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
 @variant dark (.dark &);
 
 @theme {
-  --font-sans: "Inter", "Poppins", sans-serif;
-  --font-mono: "Poppins", "Inter", sans-serif;
-  --font-serif: "Poppins", "Inter", sans-serif;
-  --font-roboto: "Poppins", "Inter", sans-serif;
+  --font-sans: "Inter", sans-serif;
+  --font-mono: "Inter", sans-serif;
+  --font-serif: "Inter", sans-serif;
+  --font-roboto: "Inter", sans-serif;
 }
 
 html,
 body,
 #root {
-  font-family: "Inter", "Poppins", sans-serif;
+  font-family: "Inter", sans-serif;
   line-height: 1.55;
   word-spacing: 0.025em;
   letter-spacing: 0;
@@ -29,7 +29,7 @@ table,
 .font-mono,
 .font-serif,
 .font-roboto {
-  font-family: "Inter", "Poppins", sans-serif !important;
+  font-family: "Inter", sans-serif !important;
   letter-spacing: 0 !important;
 }
 
@@ -43,7 +43,7 @@ strong,
 .font-bold,
 .font-extrabold,
 .font-black {
-  font-family: "Poppins", "Inter", sans-serif !important;
+  font-family: "Inter", sans-serif !important;
   letter-spacing: 0 !important;
 }
 
@@ -114,7 +114,7 @@ main > div,
 .rounded.border:not(header),
 .shadow-sm:not(header),
 .shadow:not(header) {
-  border-radius: 0.625rem !important;
+  border-radius: 0.875rem !important;
 }
 
 div[class*="bg-white"][class*="border"],

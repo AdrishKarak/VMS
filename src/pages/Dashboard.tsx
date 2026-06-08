@@ -177,36 +177,42 @@ export const Dashboard: React.FC = () => {
     .slice(0, 6);
 
   return (
-    <div className="pt-14 space-y-6 font-sans">
+    <div className="pt-6 space-y-14 font-sans md:space-y-16">
       {/* 1. TOP KPI CARDS ROW */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
         {/* Card 1: Total Vendors */}
-        <div className="bg-white dark:bg-[#161B27] p-6 rounded-md border border-gray-200 dark:border-gray-800/80 shadow-sm flex flex-col justify-between relative overflow-hidden group">
+        <div
+          style={{ '--existing-card-padding': '2rem' } as React.CSSProperties}
+          className="bg-white dark:bg-[#161B27] p-8 rounded-xl border border-gray-200 dark:border-gray-800/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group"
+        >
           <div className="flex items-center justify-between">
             <span className="text-[13px] font-medium text-gray-500 dark:text-slate-400 font-sans">Total Vendors</span>
             <div className="w-9 h-9 rounded bg-blue-50 dark:bg-blue-900/10 flex items-center justify-center">
               <Building2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             </div>
           </div>
-          <div className="mt-4">
+          <div className="mt-6">
             <span className="font-roboto font-extrabold text-[32px] text-gray-900 dark:text-white leading-none">
               {counts.vendors}
             </span>
-            <span className="text-xs text-emerald-600 dark:text-emerald-450 flex items-center gap-1 mt-1 font-sans font-semibold">
+            <span className="text-xs text-emerald-650 dark:text-emerald-450 flex items-center gap-1 mt-1 font-sans font-semibold">
               ↑ 12 this month
             </span>
           </div>
         </div>
 
         {/* Card 2: Active Contracts */}
-        <div className="bg-white dark:bg-[#161B27] p-6 rounded-md border border-gray-200 dark:border-gray-800/80 shadow-sm flex flex-col justify-between relative overflow-hidden group">
+        <div
+          style={{ '--existing-card-padding': '2rem' } as React.CSSProperties}
+          className="bg-white dark:bg-[#161B27] p-8 rounded-xl border border-gray-200 dark:border-gray-800/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group"
+        >
           <div className="flex items-center justify-between">
             <span className="text-[13px] font-medium text-gray-500 dark:text-slate-400 font-sans">Active Contracts</span>
             <div className="w-9 h-9 rounded bg-purple-50 dark:bg-purple-900/10 flex items-center justify-center">
               <FileText className="w-5 h-5 text-purple-600 dark:text-purple-400" />
             </div>
           </div>
-          <div className="mt-4">
+          <div className="mt-6">
             <span className="font-roboto font-extrabold text-[32px] text-gray-900 dark:text-white leading-none">
               {counts.contracts}
             </span>
@@ -217,14 +223,17 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Card 3: Pending Approvals */}
-        <div className="bg-white dark:bg-[#161B27] p-6 rounded-md border border-gray-200 dark:border-gray-800/80 shadow-sm flex flex-col justify-between relative overflow-hidden group">
+        <div
+          style={{ '--existing-card-padding': '2rem' } as React.CSSProperties}
+          className="bg-white dark:bg-[#161B27] p-8 rounded-xl border border-gray-200 dark:border-gray-800/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group"
+        >
           <div className="flex items-center justify-between">
             <span className="text-[13px] font-medium text-gray-500 dark:text-slate-400 font-sans">Pending Approvals</span>
             <div className="w-9 h-9 rounded bg-amber-50 dark:bg-amber-900/10 flex items-center justify-center">
               <Clock className="w-5 h-5 text-amber-600 dark:text-amber-400" />
             </div>
           </div>
-          <div className="mt-4">
+          <div className="mt-6">
             <span className="font-roboto font-extrabold text-[32px] text-gray-900 dark:text-white leading-none">
               {counts.approvals}
             </span>
@@ -235,14 +244,17 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Card 4: Total Spend MTD */}
-        <div className="bg-white dark:bg-[#161B27] p-6 rounded-md border border-gray-200 dark:border-gray-800/80 shadow-sm flex flex-col justify-between relative overflow-hidden group">
+        <div
+          style={{ '--existing-card-padding': '2rem' } as React.CSSProperties}
+          className="bg-white dark:bg-[#161B27] p-8 rounded-xl border border-gray-200 dark:border-gray-800/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group"
+        >
           <div className="flex items-center justify-between">
             <span className="text-[13px] font-medium text-gray-500 dark:text-slate-400 font-sans">Spend This Month</span>
             <div className="w-9 h-9 rounded bg-emerald-50 dark:bg-emerald-900/10 flex items-center justify-center">
               <DollarSign className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
             </div>
           </div>
-          <div className="mt-4">
+          <div className="mt-6">
             <span className="font-roboto font-extrabold text-[32px] text-gray-900 dark:text-white leading-none">
               ${counts.spend}M
             </span>
@@ -253,14 +265,17 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Card 5: Open Risk Issues */}
-        <div className="bg-white dark:bg-[#161B27] p-6 rounded-md border border-gray-200 dark:border-gray-800/80 shadow-sm flex flex-col justify-between relative overflow-hidden group">
+        <div
+          style={{ '--existing-card-padding': '2rem' } as React.CSSProperties}
+          className="bg-white dark:bg-[#161B27] p-8 rounded-xl border border-gray-200 dark:border-gray-800/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group"
+        >
           <div className="flex items-center justify-between">
             <span className="text-[13px] font-medium text-gray-500 dark:text-slate-400 font-sans">Open Risk Issues</span>
             <div className="w-9 h-9 rounded bg-red-50 dark:bg-red-950/20 flex items-center justify-center">
               <ShieldAlert className="w-5 h-5 text-red-650 dark:text-red-400" />
             </div>
           </div>
-          <div className="mt-4">
+          <div className="mt-6">
             <span className="font-roboto font-extrabold text-[32px] text-gray-900 dark:text-white leading-none">
               {counts.risks}
             </span>
@@ -272,12 +287,15 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* 2. SECOND ROW: Spend Overview (60%) & Status Distribution (40%) */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
         {/* Left Panel: Spend Trend */}
-        <div className="bg-white dark:bg-[#161B27] p-6 rounded-md border border-gray-200 dark:border-gray-800/80 shadow-sm lg:col-span-3">
-          <div className="flex items-center justify-between mb-4">
+        <div
+          style={{ '--existing-card-padding': '2.25rem' } as React.CSSProperties}
+          className="bg-white dark:bg-[#161B27] p-8 rounded-xl border border-gray-200 dark:border-gray-800/80 shadow-sm hover:shadow-md transition-all duration-300 lg:col-span-3"
+        >
+          <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-[16px] font-semibold text-gray-950 dark:text-white font-sans">Spend Overview</h2>
+              <h2 className="text-[16px] font-semibold text-gray-955 dark:text-white font-sans">Spend Overview</h2>
               <span className="text-xs text-gray-400 dark:text-slate-400 block mt-0.5">Last 12 months · All categories</span>
             </div>
             <button
@@ -287,7 +305,7 @@ export const Dashboard: React.FC = () => {
               Analyze spend &rarr;
             </button>
           </div>
-          <div className="h-[280px] w-full">
+          <div className="h-[310px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={spendTrendData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
                 <defs>
@@ -321,10 +339,13 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Right Panel: Status Distribution */}
-        <div className="bg-white dark:bg-[#161B27] p-6 rounded-md border border-gray-200 dark:border-gray-800/80 shadow-sm lg:col-span-2">
-          <div className="flex items-center justify-between mb-4">
+        <div
+          style={{ '--existing-card-padding': '2.25rem' } as React.CSSProperties}
+          className="bg-white dark:bg-[#161B27] p-8 rounded-xl border border-gray-200 dark:border-gray-800/80 shadow-sm hover:shadow-md transition-all duration-300 lg:col-span-2"
+        >
+          <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-[16px] font-semibold text-gray-950 dark:text-white font-sans">Vendor Status</h2>
+              <h2 className="text-[16px] font-semibold text-gray-955 dark:text-white font-sans">Vendor Status</h2>
               <span className="text-xs text-gray-400 dark:text-slate-400 block mt-0.5">Classification Breakdown</span>
             </div>
           </div>
@@ -351,7 +372,7 @@ export const Dashboard: React.FC = () => {
               <span className="text-[11px] uppercase text-gray-400 tracking-wider mt-1">Total Vendors</span>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-2 mt-4 max-h-[105px] overflow-y-auto">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-3 mt-8 max-h-[105px] overflow-y-auto">
             {pieData.map((d) => (
               <div key={d.name} className="flex items-center gap-2 text-xs font-sans">
                 <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: d.color }} />
@@ -364,12 +385,15 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* 3. THIRD ROW: Recent POs | Renewals Due */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-12">
         {/* Panel A: Recent Purchase Orders */}
-        <div className="bg-white dark:bg-[#161B27] p-5 rounded-md border border-gray-200 dark:border-gray-800/80 shadow-sm flex flex-col justify-between">
+        <div
+          style={{ '--existing-card-padding': '2.25rem' } as React.CSSProperties}
+          className="bg-white dark:bg-[#161B27] p-8 rounded-xl border border-gray-200 dark:border-gray-800/80 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between"
+        >
           <div>
-            <div className="flex items-center justify-between mb-2 border-b border-gray-150 dark:border-gray-800 pb-2">
-              <h3 className="text-[14px] font-semibold text-gray-950 dark:text-slate-200 font-sans uppercase tracking-wide">Recent POs</h3>
+            <div className="flex items-center justify-between mb-6 border-b border-gray-152 dark:border-gray-800 pb-4">
+              <h3 className="text-[14px] font-semibold text-gray-955 dark:text-slate-202 font-sans uppercase tracking-wide">Recent POs</h3>
               <div className="flex bg-gray-100 dark:bg-slate-800 p-0.5 rounded gap-0.5 text-[10px] uppercase font-bold">
                 {(['All', 'Pending Approval', 'Approved'] as const).map((tab) => (
                   <button
@@ -389,7 +413,7 @@ export const Dashboard: React.FC = () => {
                 <div
                   key={po.id}
                   onClick={() => setCurrentPage('purchase-orders')}
-                  className="py-2.5 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-slate-800/40 px-1 cursor-pointer rounded transition"
+                  className="py-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-slate-800/40 px-2 cursor-pointer rounded-lg transition-all duration-200"
                 >
                   <div className="overflow-hidden pr-3">
                     <span className="font-mono text-[11px] text-blue-600 dark:text-blue-400 block font-bold">
@@ -400,7 +424,7 @@ export const Dashboard: React.FC = () => {
                     </span>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <span className="text-[13px] font-roboto font-bold text-gray-950 dark:text-white block">
+                    <span className="text-[13px] font-roboto font-bold text-gray-955 dark:text-white block">
                       ${po.amount.toLocaleString()}
                     </span>
                     <span
@@ -422,20 +446,23 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Panel C: Upcoming Contract Renewals */}
-        <div className="bg-white dark:bg-[#161B27] p-5 rounded-md border border-gray-200 dark:border-gray-800/80 shadow-sm flex flex-col justify-between">
+        <div
+          style={{ '--existing-card-padding': '2.25rem' } as React.CSSProperties}
+          className="bg-white dark:bg-[#161B27] p-8 rounded-xl border border-gray-200 dark:border-gray-800/80 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between"
+        >
           <div>
-            <div className="flex items-center justify-between mb-3 border-b border-gray-150 dark:border-gray-800 pb-2">
-              <h3 className="text-[14px] font-semibold text-gray-950 dark:text-slate-200 font-sans uppercase tracking-wide">Renewals Due</h3>
+            <div className="flex items-center justify-between mb-6 border-b border-gray-150 dark:border-gray-800 pb-4">
+              <h3 className="text-[14px] font-semibold text-gray-955 dark:text-slate-200 font-sans uppercase tracking-wide">Renewals Due</h3>
               <button onClick={() => setCurrentPage('contracts')} className="text-xs text-blue-600 dark:text-blue-400 hover:underline">
                 View All &rarr;
               </button>
             </div>
-            <div className="space-y-2 max-h-[280px] overflow-y-auto">
+            <div className="space-y-4 max-h-[280px] overflow-y-auto">
               {contractRenewals.map((c) => (
                 <div
                   key={c.id}
                   onClick={() => setCurrentPage('contracts')}
-                  className="flex items-center justify-between p-2 rounded hover:bg-gray-50 dark:hover:bg-slate-800/40 cursor-pointer transition border border-gray-100 dark:border-slate-800"
+                  className="flex items-center justify-between p-4 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800/40 cursor-pointer transition-all duration-200 border border-gray-100 dark:border-slate-800 hover:shadow-sm"
                 >
                   <div className="overflow-hidden min-w-0 pr-2">
                     <span className="font-bold text-gray-900 dark:text-white text-[13px] block truncate leading-tight">
@@ -467,8 +494,6 @@ export const Dashboard: React.FC = () => {
           </div>
         </div>
       </div>
-
-      
 
       {/* Dynamic GitHub Contributions Grid */}
       {(() => {
@@ -503,10 +528,13 @@ export const Dashboard: React.FC = () => {
         }
 
         return (
-          <div className="bg-white dark:bg-[#161B27] p-5 rounded-md border border-gray-200 dark:border-gray-800/80 shadow-sm space-y-4 font-sans">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b pb-3 border-gray-150 dark:border-gray-800">
+          <div
+            style={{ '--existing-card-padding': '2.25rem' } as React.CSSProperties}
+            className="bg-white dark:bg-[#161B27] p-8 rounded-xl border border-gray-200 dark:border-gray-800/80 shadow-sm hover:shadow-md transition-all duration-300 space-y-8 font-sans"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b pb-5 border-gray-150 dark:border-gray-800">
               <div>
-                <h3 className="text-[13px] font-black text-gray-900 dark:text-slate-200 uppercase tracking-wider flex items-center gap-2">
+                <h3 className="text-[13px] font-black text-gray-900 dark:text-slate-202 uppercase tracking-wider flex items-center gap-2">
                   <Activity className="w-4 h-4 text-emerald-500 animate-pulse" /> Platform Operations Activity Ledger
                 </h3>
                 <span className="text-[10px] text-gray-400 dark:text-slate-500 block mt-0.5">
@@ -588,7 +616,7 @@ export const Dashboard: React.FC = () => {
             </div>
 
             {/* Inspect details drawer panel */}
-            <div className="p-3 bg-gray-50/60 dark:bg-slate-900/30 rounded border border-gray-150 dark:border-gray-800/80 flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs font-sans">
+            <div className="p-5 bg-gray-50/60 dark:bg-slate-900/30 rounded-lg border border-gray-150 dark:border-gray-800/80 flex flex-col md:flex-row md:items-center justify-between gap-6 text-xs font-sans">
               <div className="flex-1 space-y-1">
                 <div className="flex items-center gap-2">
                   <span className="font-bold text-[9.5px] text-indigo-650 dark:text-blue-400 uppercase tracking-widest font-mono font-sans">INSPECTING DATE TARGET</span>
@@ -600,11 +628,11 @@ export const Dashboard: React.FC = () => {
                   </span>
                 </div>
 
-                <div className="space-y-1 max-h-[80px] overflow-y-auto pr-1 scrollbar-thin">
+                <div className="space-y-2 max-h-[80px] overflow-y-auto pr-1 scrollbar-thin">
                   {!(contributions[selectedDate]?.activities?.length) ? (
                     <p className="text-gray-450 dark:text-gray-500 italic text-[11px] py-1">No custom activities logged for this simulation slot.</p>
                   ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2">
                       {contributions[selectedDate].activities.map((act, idx) => (
                         <div key={idx} className="flex items-start gap-1.5 text-[10.5px] text-gray-750 dark:text-gray-300">
                           <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 flex-shrink-0" />
@@ -657,19 +685,22 @@ export const Dashboard: React.FC = () => {
       })()}
 
       {/* 5. BOTTOM ROW: Recent Activity Feed (60%) & Quick Actions (40%) */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
         {/* Activity Feed */}
-        <div className="bg-white dark:bg-[#161B27] p-5 rounded-md border border-gray-200 dark:border-gray-800/80 shadow-sm lg:col-span-3 flex flex-col justify-between">
+        <div
+          style={{ '--existing-card-padding': '2.25rem' } as React.CSSProperties}
+          className="bg-white dark:bg-[#161B27] p-8 rounded-xl border border-gray-200 dark:border-gray-800/80 shadow-sm hover:shadow-md transition-all duration-300 lg:col-span-3 flex flex-col justify-between"
+        >
           <div>
-            <div className="flex items-center justify-between mb-4 border-b border-gray-150 dark:border-gray-800 pb-2">
-              <h3 className="text-[14px] font-semibold text-gray-950 dark:text-slate-200 font-sans uppercase tracking-wide">Recent Activity Feed</h3>
+            <div className="flex items-center justify-between mb-6 border-b border-gray-152 dark:border-gray-800 pb-4">
+              <h3 className="text-[14px] font-semibold text-gray-955 dark:text-slate-202 font-sans uppercase tracking-wide">Recent Activity Feed</h3>
               <button onClick={() => setCurrentPage('audit-logs')} className="text-xs text-blue-600 dark:text-blue-400 hover:underline">
                 Audit logs &rarr;
               </button>
             </div>
-            <div className="space-y-4 max-h-[300px] overflow-y-auto pr-1">
+            <div className="space-y-6 max-h-[300px] overflow-y-auto pr-1">
               {activityLogs.slice(0, 7).map((log) => (
-                <div key={log.id} className="flex gap-3 text-xs items-start">
+                <div key={log.id} className="flex gap-4 text-xs items-start">
                   <div className="mt-0.5">
                     {log.status === 'Success' ? (
                       <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
@@ -692,20 +723,23 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Quick Actions (40%) - 2x3 Grid */}
-        <div className="bg-white dark:bg-[#161B27] p-5 rounded-md border border-gray-200 dark:border-gray-800/80 shadow-sm lg:col-span-2">
-          <div className="mb-4">
-            <h3 className="text-[14px] font-semibold text-gray-950 dark:text-slate-200 font-sans uppercase tracking-wide">Quick Action Board</h3>
+        <div
+          style={{ '--existing-card-padding': '2.25rem' } as React.CSSProperties}
+          className="bg-white dark:bg-[#161B27] p-8 rounded-xl border border-gray-200 dark:border-gray-800/80 shadow-sm hover:shadow-md transition-all duration-300 lg:col-span-2"
+        >
+          <div className="mb-6">
+            <h3 className="text-[14px] font-semibold text-gray-955 dark:text-slate-202 font-sans uppercase tracking-wide">Quick Action Board</h3>
             <span className="text-[11px] text-gray-400 dark:text-slate-500 block mt-0.5">Accelerate key management modules directly</span>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-6">
             {/* Add New Vendor */}
             <button
               onClick={() => {
                 setCurrentPage('onboarding');
                 addToast('info', 'Onboarding Action Triggered', 'Launched new vendor request pipeline.');
               }}
-              className="h-[80px] border border-blue-100 hover:border-blue-400 dark:border-slate-800/80 bg-blue-50/10 hover:bg-blue-50/30 dark:bg-slate-900/10 dark:hover:bg-slate-800/40 rounded flex flex-col items-center justify-center transition p-2 cursor-pointer gap-1.5 group"
+              className="h-[105px] border border-blue-100 hover:border-blue-400 dark:border-slate-800/80 bg-blue-50/10 hover:bg-blue-50/30 dark:bg-slate-900/10 dark:hover:bg-slate-800/40 rounded-xl flex flex-col items-center justify-center transition-all duration-200 p-4 cursor-pointer gap-3 group hover:shadow-sm"
             >
               <UserPlus className="w-5 h-5 text-blue-600 dark:text-blue-400 group-hover:scale-105 transition" />
               <span className="text-[11.5px] font-semibold text-blue-700 dark:text-blue-300 font-sans leading-none">Add New Vendor</span>
@@ -717,13 +751,11 @@ export const Dashboard: React.FC = () => {
                 setCurrentPage('purchase-orders');
                 addToast('info', 'PO Action Triggered', 'Launched Purchase Orders wizard.');
               }}
-              className="h-[80px] border border-emerald-100 hover:border-emerald-400 dark:border-slate-800/80 bg-emerald-50/10 hover:bg-emerald-50/30 dark:bg-slate-900/10 dark:hover:bg-slate-800/40 rounded flex flex-col items-center justify-center transition p-2 cursor-pointer gap-1.5 group"
+              className="h-[105px] border border-emerald-100 hover:border-emerald-400 dark:border-slate-800/80 bg-emerald-50/10 hover:bg-emerald-50/30 dark:bg-slate-900/10 dark:hover:bg-slate-800/40 rounded-xl flex flex-col items-center justify-center transition-all duration-200 p-4 cursor-pointer gap-3 group hover:shadow-sm"
             >
               <ShoppingCart className="w-5 h-5 text-emerald-600 dark:text-emerald-400 group-hover:scale-105 transition" />
               <span className="text-[11.5px] font-semibold text-emerald-700 dark:text-emerald-300 font-sans leading-none">Create PO</span>
             </button>
-
-            {/* RFQ button removed per request */}
 
             {/* Upload Document */}
             <button
@@ -731,7 +763,7 @@ export const Dashboard: React.FC = () => {
                 setCurrentPage('compliance');
                 addToast('info', 'Document Action Triggered', 'Opened compliance file catalog module.');
               }}
-              className="h-[80px] border border-amber-100 hover:border-amber-400 dark:border-slate-800/80 bg-amber-50/10 hover:bg-amber-50/30 dark:bg-slate-900/10 dark:hover:bg-slate-800/40 rounded flex flex-col items-center justify-center transition p-2 cursor-pointer gap-1.5 group"
+              className="h-[105px] border border-amber-100 hover:border-amber-400 dark:border-slate-800/80 bg-amber-50/10 hover:bg-amber-50/30 dark:bg-slate-900/10 dark:hover:bg-slate-800/40 rounded-xl flex flex-col items-center justify-center transition-all duration-200 p-4 cursor-pointer gap-3 group hover:shadow-sm"
             >
               <Upload className="w-5 h-5 text-amber-600 dark:text-amber-400 group-hover:scale-105 transition" />
               <span className="text-[11.5px] font-semibold text-amber-700 dark:text-amber-300 font-sans leading-none">Archive Doc</span>
@@ -743,7 +775,7 @@ export const Dashboard: React.FC = () => {
                 setCurrentPage('risk');
                 addToast('info', 'Risk Audit Triggered', 'Launched risk diagnostics matrix.');
               }}
-              className="h-[80px] border border-red-100 hover:border-red-400 dark:border-slate-800/80 bg-red-50/10 hover:bg-red-50/30 dark:bg-slate-900/10 dark:hover:bg-red-800/20 rounded flex flex-col items-center justify-center transition p-2 cursor-pointer gap-1.5 group"
+              className="h-[105px] border border-red-100 hover:border-red-400 dark:border-slate-800/80 bg-red-50/10 hover:bg-red-50/30 dark:bg-slate-900/10 dark:hover:bg-red-800/20 rounded-xl flex flex-col items-center justify-center transition-all duration-200 p-4 cursor-pointer gap-3 group hover:shadow-sm"
             >
               <ShieldAlert className="w-5 h-5 text-red-650 dark:text-red-400 group-hover:scale-105 transition" />
               <span className="text-[11.5px] font-semibold text-red-700 dark:text-red-300 font-sans leading-none">Risk Assess</span>
@@ -755,7 +787,7 @@ export const Dashboard: React.FC = () => {
                 setCurrentPage('calendar');
                 addToast('info', 'Alert Calendar Displayed', 'Opened planning schedule.');
               }}
-              className="h-[80px] border border-purple-100 hover:border-purple-400 dark:border-slate-800/80 bg-purple-50/10 hover:bg-purple-50/30 dark:bg-slate-900/10 dark:hover:bg-slate-800/40 rounded flex flex-col items-center justify-center transition p-2 cursor-pointer gap-1.5 group"
+              className="h-[105px] border border-purple-100 hover:border-purple-400 dark:border-slate-800/80 bg-purple-50/10 hover:bg-purple-50/30 dark:bg-slate-900/10 dark:hover:bg-slate-800/40 rounded-xl flex flex-col items-center justify-center transition-all duration-200 p-4 cursor-pointer gap-3 group hover:shadow-sm"
             >
               <Calendar className="w-5 h-5 text-purple-600 dark:text-purple-400 group-hover:scale-105 transition" />
               <span className="text-[11.5px] font-semibold text-purple-700 dark:text-purple-300 font-sans leading-none">Schedule Audit</span>

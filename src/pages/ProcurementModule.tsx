@@ -83,6 +83,25 @@ export const ProcurementModule: React.FC = () => {
     setItemsRegistry: setItems
   } = useVMS();
 
+  const renderPriorityBadge = (priority: PurchaseOrder['priority']) => {
+    const styles = {
+      Urgent: 'bg-red-50 text-red-700 border-red-200 dark:bg-red-950/20 dark:text-red-400 dark:border-red-900/30',
+      High: 'bg-orange-50 text-orange-700 border-orange-200 dark:bg-orange-950/20 dark:text-orange-400 dark:border-orange-900/30',
+      Normal: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/20 dark:text-blue-400 dark:border-blue-900/30',
+      Low: 'bg-slate-50 text-slate-700 border-slate-200 dark:bg-slate-800/40 dark:text-slate-400 dark:border-slate-700/50'
+    };
+    return (
+      <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border text-[11px] font-bold ${styles[priority] || styles.Normal}`}>
+        <span className={`w-1.5 h-1.5 rounded-full ${
+          priority === 'Urgent' ? 'bg-red-500' :
+          priority === 'High' ? 'bg-orange-500' :
+          priority === 'Normal' ? 'bg-blue-500' : 'bg-slate-400'
+        }`} />
+        {priority}
+      </span>
+    );
+  };
+
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All');
 
@@ -274,46 +293,82 @@ export const ProcurementModule: React.FC = () => {
 
         {activePage === 'purchase-orders' && (
           <div className="overflow-x-auto">
-            <table className="w-full text-left min-w-[1120px] text-sm">
+            <table className="w-full text-left min-w-[1120px] text-sm border-collapse">
               <thead>
-                <tr>
-                  <th>PO ID</th>
-                  <th>Title</th>
-                  <th>Vendor</th>
-                  <th>Required By</th>
-                  <th>Priority</th>
-                  <th>Items</th>
-                  <th>Amount</th>
-                  <th>Status</th>
-                  <th>Payment</th>
-                  <th>Action</th>
+                <tr className="border-b border-gray-200 dark:border-slate-700/60">
+                  <th className="pb-3 text-xs font-bold text-gray-400 uppercase tracking-wider">PO ID</th>
+                  <th className="pb-3 text-xs font-bold text-gray-400 uppercase tracking-wider">Title</th>
+                  <th className="pb-3 text-xs font-bold text-gray-400 uppercase tracking-wider">Vendor</th>
+                  <th className="pb-3 text-xs font-bold text-gray-400 uppercase tracking-wider">Required By</th>
+                  <th className="pb-3 text-xs font-bold text-gray-400 uppercase tracking-wider">Priority</th>
+                  <th className="pb-3 text-xs font-bold text-gray-400 uppercase tracking-wider text-center">Items</th>
+                  <th className="pb-3 text-xs font-bold text-gray-400 uppercase tracking-wider">Amount</th>
+                  <th className="pb-3 text-xs font-bold text-gray-400 uppercase tracking-wider">Status</th>
+                  <th className="pb-3 text-xs font-bold text-gray-400 uppercase tracking-wider">Payment</th>
+                  <th className="pb-3 text-xs font-bold text-gray-400 uppercase tracking-wider">Action</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredPOs.slice(0, 30).map((po) => (
-                  <tr key={po.id} className="hover:bg-blue-50/40 dark:hover:bg-slate-800/40">
-                    <td className="font-bold text-blue-600">{po.id}</td>
-                    <td>
-                      <strong className="block text-gray-950 dark:text-white">{po.title}</strong>
-                      <span className="text-xs text-gray-400">{po.category}</span>
-                    </td>
-                    <td>{po.vendorName}</td>
-                    <td><CalendarDays className="inline w-3.5 h-3.5 mr-1 text-gray-400" />{po.requiredBy}</td>
-                    <td>{po.priority}</td>
-                    <td>{po.itemsCount}</td>
-                    <td className="font-bold">{money(po.amount)}</td>
-                    <td><StatusPill label={po.status} /></td>
-                    <td><StatusPill label={po.paymentStatus} /></td>
-                    <td>
-                      <button
-                        onClick={() => updatePurchaseOrder({ ...po, status: po.status === 'Draft' ? 'Pending Approval' : po.status === 'Pending Approval' ? 'Approved' : po.status })}
-                        className="px-3 py-1.5 border rounded font-bold text-xs text-blue-600"
-                      >
-                        Advance
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {filteredPOs.slice(0, 30).map((po) => {
+                  const isAdvanceable = po.status === 'Draft' || po.status === 'Pending Approval';
+                  return (
+                    <tr key={po.id} className="hover:bg-blue-50/20 dark:hover:bg-slate-800/20 transition-colors duration-150">
+                      <td className="align-middle py-4 pr-3 border-b border-gray-100 dark:border-slate-800/60">
+                        <span className="font-mono text-xs font-semibold px-2.5 py-1 bg-blue-50/60 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-900/40 rounded">
+                          {po.id}
+                        </span>
+                      </td>
+                      <td className="align-middle py-4 pr-3 border-b border-gray-100 dark:border-slate-800/60 max-w-[240px]">
+                        <div className="flex flex-col">
+                          <span className="font-semibold text-gray-900 dark:text-white truncate" title={po.title}>
+                            {po.title}
+                          </span>
+                          <span className="text-[11px] text-gray-400 dark:text-slate-500 font-medium tracking-wide mt-0.5">
+                            {po.category}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="align-middle py-4 pr-3 border-b border-gray-100 dark:border-slate-800/60 font-medium text-gray-700 dark:text-slate-300">
+                        {po.vendorName}
+                      </td>
+                      <td className="align-middle py-4 pr-3 border-b border-gray-100 dark:border-slate-800/60 text-gray-650 dark:text-slate-400">
+                        <div className="flex items-center gap-1.5 text-xs">
+                          <CalendarDays className="w-3.5 h-3.5 text-gray-400 dark:text-slate-500" />
+                          <span>{po.requiredBy}</span>
+                        </div>
+                      </td>
+                      <td className="align-middle py-4 pr-3 border-b border-gray-100 dark:border-slate-800/60">
+                        {renderPriorityBadge(po.priority)}
+                      </td>
+                      <td className="align-middle py-4 pr-3 border-b border-gray-100 dark:border-slate-800/60 text-center font-semibold text-gray-600 dark:text-slate-450 font-mono text-xs">
+                        {po.itemsCount}
+                      </td>
+                      <td className="align-middle py-4 pr-3 border-b border-gray-100 dark:border-slate-800/60 font-bold text-gray-900 dark:text-white font-mono text-[13px]">
+                        {money(po.amount)}
+                      </td>
+                      <td className="align-middle py-4 pr-3 border-b border-gray-100 dark:border-slate-800/60">
+                        <StatusPill label={po.status} />
+                      </td>
+                      <td className="align-middle py-4 pr-3 border-b border-gray-100 dark:border-slate-800/60">
+                        <StatusPill label={po.paymentStatus} />
+                      </td>
+                      <td className="align-middle py-4 border-b border-gray-100 dark:border-slate-800/60">
+                        {isAdvanceable ? (
+                          <button
+                            onClick={() => updatePurchaseOrder({ ...po, status: po.status === 'Draft' ? 'Pending Approval' : po.status === 'Pending Approval' ? 'Approved' : po.status })}
+                            className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 dark:bg-blue-950/30 dark:hover:bg-blue-900/30 dark:text-blue-400 border border-blue-150 dark:border-blue-900/40 rounded font-bold text-xs transition duration-150 cursor-pointer"
+                          >
+                            Advance
+                          </button>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 text-[11px] font-bold text-gray-400 dark:text-slate-500">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" /> Complete
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
