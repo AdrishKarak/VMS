@@ -179,7 +179,7 @@ export const VMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Theme support: Read from localStorage or default to true for High Density look
   const [darkMode, setDarkMode] = useState<boolean>(() => {
     const saved = localStorage.getItem('vms-dark-mode');
-    if (saved === null) return true;
+    if (saved === null) return false;
     return saved === 'true';
   });
 
