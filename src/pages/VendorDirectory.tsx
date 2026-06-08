@@ -189,7 +189,7 @@ export const VendorDirectory: React.FC = () => {
   const uniqueCountries = useMemo(() => Array.from(new Set(vendors.map(v => v.country.replace(/[\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD00-\uDFFF]/g, '').trim()))), [vendors]);
 
   return (
-    <div className="space-y-6 font-sans relative w-full max-w-full overflow-hidden">
+    <div className="pt-14 space-y-6 font-sans relative w-full max-w-full overflow-hidden">
       {/* Search and Filters Controls Row */}
       <div className="bg-white dark:bg-[#161B27] p-4 rounded-md border border-gray-200 dark:border-gray-800/80 shadow-sm space-y-4 w-full">
         <div className="flex flex-col xl:flex-row gap-3">

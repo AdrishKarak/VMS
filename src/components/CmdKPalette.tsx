@@ -96,18 +96,7 @@ export const CmdKPalette: React.FC = () => {
         setCmdPaletteOpen(false);
       }
     },
-    {
-      id: 'act-new-rfq',
-      type: 'action',
-      title: 'Generate RFQ / Sourcing tender',
-      subtitle: 'Publish strategic specifications for bids',
-      shortcut: 'G R',
-      icon: FileSearch,
-      onClick: () => {
-        setCurrentPage('rfq');
-        setCmdPaletteOpen(false);
-      }
-    },
+    // RFQ command removed per request
     {
       id: 'act-new-contract',
       type: 'action',
@@ -132,18 +121,7 @@ export const CmdKPalette: React.FC = () => {
         setCmdPaletteOpen(false);
       }
     },
-    {
-      id: 'act-upload',
-      type: 'action',
-      title: 'Upload Compliance Files',
-      subtitle: 'Catalog an archived certificate or tax slip',
-      shortcut: 'U D',
-      icon: Upload,
-      onClick: () => {
-        setCurrentPage('compliance');
-        setCmdPaletteOpen(false);
-      }
-    },
+    // Upload compliance command removed per request
     {
       id: 'act-payment',
       type: 'action',

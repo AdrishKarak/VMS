@@ -35,6 +35,8 @@ export const TopHeader: React.FC = () => {
         return { title: 'Performance Core', breadcrumb: 'VendorFlow / Performance' };
       case 'esg':
         return { title: 'ESG & Sustainability', breadcrumb: 'VendorFlow / Compliance / ESG' };
+      case 'items-registry':
+        return { title: 'Items Registry', breadcrumb: 'VendorFlow / Procurement / Items' };
       case 'purchase-orders':
         return { title: 'Purchase Orders', breadcrumb: 'VendorFlow / Procurement / PO' };
       case 'rfq':
@@ -67,7 +69,7 @@ export const TopHeader: React.FC = () => {
   const info = getPageInfo();
 
   return (
-    <header className="h-14 bg-white dark:bg-[#1A202C] border-b border-gray-200 dark:border-[#2D3748] px-6 py-2 flex items-center justify-between sticky top-0 z-30 transition-colors duration-200">
+    <header className="h-20 bg-white dark:bg-[#1A202C] border-b border-gray-200 dark:border-[#2D3748] px-6 py-2 flex items-center justify-between fixed top-0 left-14 md:left-[240px] right-0 z-40 transition-colors duration-200">
       {/* Left side Titles and Breadcrumbs */}
       <div className="flex flex-col">
         <h1 className="font-sans font-bold text-base text-gray-900 dark:text-[#E2E8F0] leading-none tracking-tight">

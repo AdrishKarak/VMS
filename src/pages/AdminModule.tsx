@@ -161,16 +161,14 @@ export const AdminModule: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 font-sans">
+    <div className="pt-14 space-y-6 font-sans">
       {/* Dynamic Navigation Sub tabs */}
       <div className="bg-white dark:bg-[#161B27] p-1 border rounded shadow-sm flex font-sans overflow-x-auto gap-1">
         {(
-          [
-            { id: 'users', label: 'User Management', icon: Users },
-            { id: 'calendar', label: 'Milestones Calendar', icon: Calendar },
-            { id: 'settings', label: 'Systems Settings & Integrations', icon: Settings }
-          ] as const
-        ).map((t) => {
+            [
+              { id: 'calendar', label: 'Milestones Calendar', icon: Calendar }
+            ] as const
+          ).map((t) => {
           const Icon = t.icon;
           return (
             <button
@@ -185,12 +183,12 @@ export const AdminModule: React.FC = () => {
               <Icon className="w-4 h-4" />
               {t.label}
             </button>
-          );
-        })}
-      </div>
+            );
+              })}
+          </div>
 
       {/* MODULE TAB 1: PERSONNEL USER CREDENTIALS */}
-      {tab === 'users' && (
+      {tab === 'users' ? (
         <div className="space-y-4">
           <div className="bg-white dark:bg-[#161B27] p-5 rounded-md border flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gray-50/45 text-xs">
             <div>
@@ -313,84 +311,32 @@ export const AdminModule: React.FC = () => {
             </table>
           </div>
         </div>
-      )}
-
-      {/* MODULE TAB 2: MILESTONES CALENDAR INTERFACE */}
-      {tab === 'calendar' && (
-        <div className="bg-white dark:bg-[#161B27] border rounded shadow-sm p-6 space-y-6 text-xs font-sans">
-          {/* Calendar top controls */}
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 border-b pb-4">
+      ) : tab === 'calendar' ? (
+        <div className="bg-white dark:bg-[#161B27] p-5 rounded-md border shadow-sm text-xs font-sans space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b pb-3 dark:border-gray-800">
+            <div>
+              <h3 className="font-bold text-gray-901 uppercase tracking-wider text-[11px]">Milestones Calendar</h3>
+              <span className="text-gray-400">{MONTHS[currMonth]} {currYear}</span>
+            </div>
             <div className="flex flex-wrap items-center gap-2">
-              <h3 className="font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider text-[11px] font-mono mr-2">
-                Calendar schedule milestones
-              </h3>
-              
-              {/* Previous month controller */}
-              <button
-                onClick={() => {
-                  if (currMonth === 0) {
-                    setCurrMonth(11);
-                    setCurrYear(prev => prev - 1);
-                  } else {
-                    setCurrMonth(prev => prev - 1);
-                  }
-                }}
-                className="p-1 px-2.5 border rounded hover:bg-gray-50 dark:hover:bg-slate-800 font-bold dark:border-gray-700 text-gray-700 dark:text-gray-300 cursor-pointer"
-                title="Previous Month"
-              >
-                &larr;
-              </button>
-
-              {/* Month Dropdown value */}
               <select
                 value={currMonth}
                 onChange={(e) => setCurrMonth(Number(e.target.value))}
-                className="p-1 px-1.5 border rounded font-semibold bg-white dark:bg-slate-900 dark:border-gray-700 text-gray-700 dark:text-gray-300 outline-none"
+                className="h-[30px] border border-gray-200 dark:border-[#1F2937] text-xs rounded-sm px-2 bg-white dark:bg-[#161B27] text-gray-700 dark:text-slate-300 outline-none"
               >
-                {MONTHS.map((m, idx) => (
-                  <option key={idx} value={idx}>{m}</option>
+                {MONTHS.map((month, index) => (
+                  <option key={month} value={index}>{month}</option>
                 ))}
               </select>
-
-              {/* Year Dropdown value */}
               <select
                 value={currYear}
                 onChange={(e) => setCurrYear(Number(e.target.value))}
-                className="p-1 px-1.5 border rounded font-semibold bg-white dark:bg-slate-900 dark:border-gray-700 text-gray-700 dark:text-gray-300 outline-none align-middle"
+                className="h-[30px] border border-gray-200 dark:border-[#1F2937] text-xs rounded-sm px-2 bg-white dark:bg-[#161B27] text-gray-700 dark:text-slate-300 outline-none"
               >
-                {YEARS.map((y) => (
-                  <option key={y} value={y}>{y}</option>
+                {YEARS.map((year) => (
+                  <option key={year} value={year}>{year}</option>
                 ))}
               </select>
-
-              {/* Next month controller */}
-              <button
-                onClick={() => {
-                  if (currMonth === 11) {
-                    setCurrMonth(0);
-                    setCurrYear(prev => prev + 1);
-                  } else {
-                    setCurrMonth(prev => prev + 1);
-                  }
-                }}
-                className="p-1 px-2.5 border rounded hover:bg-gray-50 dark:hover:bg-slate-800 font-bold dark:border-gray-700 text-gray-700 dark:text-gray-300 cursor-pointer"
-                title="Next Month"
-              >
-                &rarr;
-              </button>
-
-              <button
-                onClick={() => {
-                  setCurrMonth(5);
-                  setCurrYear(2026);
-                }}
-                className="p-1 px-2 text-[10px] uppercase font-bold border rounded bg-indigo-50 text-indigo-700 hover:bg-indigo-100 dark:bg-slate-800 dark:text-indigo-300 dark:border-gray-700 ml-1 cursor-pointer"
-              >
-                Reset to June 2026
-              </button>
-            </div>
-
-            <div className="flex items-center gap-2">
               <button
                 onClick={() => {
                   setEventDate(`${currYear}-${String(currMonth + 1).padStart(2, '0')}-01`);
@@ -398,11 +344,11 @@ export const AdminModule: React.FC = () => {
                   setEventType('compliance');
                   setShowAddEvent(true);
                 }}
-                className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded flex items-center gap-1 uppercase text-[10px] tracking-wider leading-none cursor-pointer"
+                className="h-[30px] px-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded flex items-center gap-1.5 cursor-pointer"
               >
-                <Plus className="w-3.5 h-3.5" /> Add Target Milestone
+                <Plus className="w-3.5 h-3.5" />
+                Add Target
               </button>
-
               <div className="flex border rounded p-0.5 bg-gray-50 dark:bg-slate-800 dark:border-gray-700">
                 {(['month', 'week', 'agenda'] as const).map((mode) => (
                   <button
@@ -734,7 +680,7 @@ export const AdminModule: React.FC = () => {
             </div>
           )}
         </div>
-      )}
+      ) : null}
 
       {/* DYNAMIC MILESTONE CREATION MODAL DRAWER */}
       {showAddEvent && (

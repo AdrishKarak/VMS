@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useVMS } from '../vmsContext';
 import { Invoice } from '../types';
+import { BatchPayments } from './BatchPayments';
 import {
   DollarSign,
   TrendingUp,
@@ -39,11 +40,15 @@ export const FinanceModule: React.FC = () => {
     invoices,
     updateInvoiceStatus,
     addToast,
-    currentPage
+    currentPage,
+    payments,
+    addPayment,
+    savingsInitiatives,
+    setCurrentPage
   } = useVMS();
 
-  // Tab: 'invoices' | 'spend' | 'payments' | 'savings'
-  const [tab, setTab] = useState<'invoices' | 'spend' | 'payments' | 'savings'>('invoices');
+  // Tab: 'invoices' | 'spend' | 'payments' | 'savings' | 'batch-payments'
+  const [tab, setTab] = useState<'invoices' | 'spend' | 'payments' | 'savings' | 'batch-payments'>('invoices');
 
   // Align active tab with outer route click
   useEffect(() => {
@@ -55,6 +60,8 @@ export const FinanceModule: React.FC = () => {
       setTab('savings');
     } else if (currentPage === 'spend-analytics') {
       setTab('spend');
+    } else if (currentPage === 'batch-payments') {
+      setTab('batch-payments');
     }
   }, [currentPage]);
 
@@ -66,17 +73,25 @@ export const FinanceModule: React.FC = () => {
   const [grnCheck, setGrnCheck] = useState(false);
   const [rateCheck, setRateCheck] = useState(false);
 
-  // New initiative state
-  const [initOpen, setInitOpen] = useState(false);
-  const [initName, setInitName] = useState('');
-  const [initSavings, setInitSavings] = useState(15000);
+  // Form states for Direct Disbursal (Payments) Form
+  const [payInvoiceRef, setPayInvoiceRef] = useState('');
+  const [payMethod, setPayMethod] = useState<'Bank Transfer' | 'ACH' | 'Wire' | 'Check'>('ACH');
+  const [payDate, setPayDate] = useState(() => {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
+  });
 
-  // Savings initiatives state
-  const [initiatives, setInitiatives] = useState([
-    { id: 'INI-01', name: 'Silicon wafer volume bulk discount', target: '$45,000', achieved: 38000, category: 'Logistics' },
-    { id: 'INI-02', name: 'Software licensing consolidation', target: '$25,000', achieved: 22000, category: 'IT Services' },
-    { id: 'INI-03', name: 'Facilities maintenance service consolidation', target: '$12,000', achieved: 10500, category: 'Facilities' }
-  ]);
+  // Find the selected invoice for auto-completion
+  const selectedPaymentInvoice = useMemo(() => {
+    return invoices.find(inv => inv.id === payInvoiceRef);
+  }, [invoices, payInvoiceRef]);
+
+  // Unpaid invoices for the dropdown selector
+  const unpaidInvoices = useMemo(() => {
+    return invoices.filter(inv => inv.status !== 'Paid' && inv.paymentStatus !== 'Paid');
+  }, [invoices]);
+
+
 
   // Aggregate stats
   const [invoiceSearchText, setInvoiceSearchText] = useState('');
@@ -113,11 +128,11 @@ export const FinanceModule: React.FC = () => {
   ];
 
   // BarChart savings comparison
-  const savingsBarData = initiatives.map(init => ({
+  const savingsBarData = savingsInitiatives.map(init => ({
     name: init.id,
-    NameLong: init.name,
-    Achieved: init.achieved,
-    Target: Number(init.target.replace(/[^0-9]/g, ''))
+    NameLong: init.title,
+    Achieved: init.amount,
+    Target: init.baselineCost - init.negotiatedCost
   }));
 
   const handleExecute3WayMatch = (id: string) => {
@@ -140,34 +155,44 @@ export const FinanceModule: React.FC = () => {
     setMatchingInvoiceId(null);
   };
 
-  const handleCreateInitiative = (e: React.FormEvent) => {
+  const handleCreatePaymentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!initName) return;
-    setInitiatives(prev => [
-      ...prev,
-      {
-        id: `INI-0${prev.length + 1}`,
-        name: initName,
-        target: `$${initSavings.toLocaleString()}`,
-        achieved: Math.round(initSavings * 0.8),
-        category: 'Services'
-      }
-    ]);
-    addToast('success', 'Savings Initiative Registered', 'Trackers launched for negotiated discount margin.');
-    setInitOpen(false);
-    setInitName('');
+    if (!payInvoiceRef) {
+      addToast('error', 'Incomplete Form', 'Please select an invoice reference.');
+      return;
+    }
+    const inv = selectedPaymentInvoice;
+    if (!inv) return;
+
+    addPayment({
+      vendorId: inv.vendorId,
+      vendorName: inv.vendorName,
+      invoiceRef: inv.id,
+      amount: inv.total,
+      currency: 'USD',
+      method: payMethod,
+      scheduledDate: payDate,
+      processedDate: new Date().toISOString().split('T')[0],
+      status: 'Scheduled',
+      referenceNumber: `TXN-${100000 + Math.floor(Math.random() * 900000)}`
+    });
+
+    addToast('success', 'Clearance Dispatch Initialized', `Direct disbursal voucher scheduled for ${inv.id}`);
+    setPayInvoiceRef('');
   };
 
+
+
   return (
-    <div className="space-y-6 font-sans">
+    <div className="pt-14 space-y-6 font-sans">
       {/* Dynamic Tab selector header row */}
       <div className="bg-white dark:bg-[#161B27] border rounded shadow-sm flex font-sans overflow-x-auto p-1 gap-1">
-        {(
+            {(
           [
             { id: 'invoices', label: '3-Way Invoice Match', icon: FileCheck2 },
             { id: 'spend', label: 'Spend Allocation', icon: TrendingUp },
             { id: 'payments', label: 'Direct Disbursal', icon: Wallet },
-            { id: 'savings', label: 'Savings & Margins', icon: Coins }
+            { id: 'batch-payments', label: 'Batch Payment', icon: Layers }
           ] as const
         ).map((t) => {
           const Icon = t.icon;
@@ -451,38 +476,71 @@ export const FinanceModule: React.FC = () => {
 
       {/* TAB 3: PAYMENTS DISBURSEMENT */}
       {tab === 'payments' && (
-        <div className="bg-white dark:bg-[#161B27] border rounded shadow-sm overflow-hidden text-xs font-sans">
-          <div className="p-4 border-b flex justify-between items-center bg-gray-50/45 dark:bg-slate-900/10 text-xs font-bold">
-            Cash Disbursements scheduling lists
+        <div className="space-y-4">
+          <div className="bg-white dark:bg-[#161B27] border rounded shadow-sm overflow-hidden text-xs font-sans">
+            <div className="p-4 border-b flex justify-between items-center bg-gray-50/45 dark:bg-slate-900/10 text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider">
+              <span>Direct Cash Disbursements</span>
+              <button
+                onClick={() => setCurrentPage('create-payment')}
+                className="h-8 px-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded text-[11px] flex items-center gap-1 shadow-sm cursor-pointer normal-case"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                Schedule Payment
+              </button>
+            </div>
+            <div className="overflow-x-auto w-full">
+              <table className="w-full text-left">
+                <thead className="bg-[#1C2333]/90 text-[10px] text-white/50 uppercase tracking-widest">
+                  <tr>
+                    <th className="p-3 pl-4">Payment ID</th>
+                    <th className="p-3">Vendor Account</th>
+                    <th className="p-3">Attached Invoice</th>
+                    <th className="p-3">Method Class</th>
+                    <th className="p-3">Post Date</th>
+                    <th className="p-3 text-right">Sum balance</th>
+                    <th className="p-3">Ref Code</th>
+                    <th className="p-3">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-150 dark:divide-gray-803 text-slate-700 dark:text-slate-200">
+                  {payments.length === 0 ? (
+                    <tr>
+                      <td colSpan={8} className="p-8 text-center text-gray-400 italic">No payments logged in the system.</td>
+                    </tr>
+                  ) : (
+                    payments.map((pay) => (
+                      <tr key={pay.id} className="hover:bg-gray-50/10 transition">
+                        <td className="p-3 pl-4 font-mono font-bold text-blue-600 dark:text-blue-400">{pay.id}</td>
+                        <td className="p-3 font-semibold text-gray-900 dark:text-white">{pay.vendorName}</td>
+                        <td className="p-3 font-mono text-gray-700 dark:text-slate-300">{pay.invoiceRef}</td>
+                        <td className="p-3 font-medium text-slate-700 dark:text-slate-300">{pay.method}</td>
+                        <td className="p-3 text-gray-500 dark:text-slate-400">{pay.scheduledDate}</td>
+                        <td className="p-3 text-right font-mono font-bold text-gray-900 dark:text-slate-200">
+                          ${pay.amount.toLocaleString()} USD
+                        </td>
+                        <td className="p-3 text-gray-400 dark:text-slate-400 font-mono">{pay.referenceNumber}</td>
+                        <td className="p-3">
+                          <span className={`inline-block border text-[9px] font-bold px-1.5 py-0.5 rounded ${
+                            pay.status === 'Completed' ? 'bg-emerald-50 text-emerald-800 dark:bg-emerald-950/20 dark:text-emerald-400 dark:border-emerald-800' :
+                            pay.status === 'Processing' ? 'bg-blue-50 text-blue-800 dark:bg-blue-950/20 dark:text-blue-400 dark:border-blue-800' :
+                            pay.status === 'Scheduled' ? 'bg-amber-50 text-amber-800 dark:bg-amber-950/20 dark:text-amber-400 dark:border-amber-800' :
+                            'bg-red-50 text-red-800 dark:bg-red-950/20 dark:text-red-400 dark:border-red-800'
+                          }`}>
+                            {pay.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
-          <table className="w-full text-left">
-            <thead className="bg-[#1C2333]/90 text-[10px] text-white/50 uppercase tracking-widest">
-              <tr>
-                <th className="p-3 pl-4">Authorized Bank Account</th>
-                <th className="p-3">Method Class</th>
-                <th className="p-3">Estimated Post Date</th>
-                <th className="p-3 text-right">Sum balance</th>
-                <th className="p-3 text-center">Transfer Confirmation Code</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-150 dark:divide-gray-803 text-slate-700 dark:text-slate-200">
-              {[
-                { acc: 'NovaStar Logistics (BofA Wire)', method: 'International Swift Wire', date: '2026-06-15', sum: '$24,500', ref: 'SW-827361-CA' },
-                { acc: 'ClearPath IT consulting (Wells Fargo ACH)', method: 'ACH Transfer Direct', date: '2026-06-18', sum: '$12,200', ref: 'ACH-9821-X9' },
-                { acc: 'Apex Strategic (Treasury Check)', method: 'Standard Corporate Check Match', date: '2026-06-25', sum: '$88,090', ref: 'CHK-2026-IT' }
-              ].map((pay, id) => (
-                <tr key={id} className="hover:bg-gray-50/10">
-                  <td className="p-3 pl-4 font-bold text-gray-900 dark:text-white">{pay.acc}</td>
-                  <td className="p-3 text-slate-700 dark:text-slate-300">{pay.method}</td>
-                  <td className="p-3 text-gray-500 dark:text-slate-400">{pay.date}</td>
-                  <td className="p-3 text-right font-mono font-bold text-gray-900 dark:text-slate-200">{pay.sum}</td>
-                  <td className="p-3 text-center text-gray-400 dark:text-slate-400 font-mono">{pay.ref}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </div>
       )}
+
+      {/* TAB 5: BATCH PAYMENTS */}
+      {tab === 'batch-payments' && <BatchPayments />}
 
       {/* TAB 4: NEGOTIATED SAVINGS TRACKER */}
       {tab === 'savings' && (
@@ -523,78 +581,24 @@ export const FinanceModule: React.FC = () => {
           <div className="xl:col-span-1 bg-white dark:bg-[#161B27] border rounded shadow-sm p-4 space-y-4 text-xs font-sans">
             <h3 className="font-bold text-gray-900 uppercase tracking-wider text-[11px] pb-1 border-b">Consolidation Initiatives</h3>
             <div className="divide-y divide-gray-150 dark:divide-slate-800">
-              {initiatives.map((init) => (
+              {savingsInitiatives.map((init) => (
                 <div key={init.id} className="py-2.5 space-y-1">
-                  <div className="flex justify-between font-bold text-gray-900 dark:text-slate-101">
-                    <span>{init.name}</span>
-                    <span className="font-mono text-[11px] font-extrabold text-emerald-600">${init.achieved.toLocaleString()}</span>
+                  <div className="flex justify-between font-bold text-gray-900 dark:text-slate-100">
+                    <span>{init.title}</span>
+                    <span className="font-mono text-[11px] font-extrabold text-emerald-600">${init.amount.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between text-[10px] text-gray-400">
                     <span>Category: {init.category}</span>
-                    <span>Target: {init.target}</span>
+                    <span>Target: ${(init.baselineCost - init.negotiatedCost).toLocaleString()}</span>
                   </div>
                   <div className="w-full h-1 bg-gray-100 dark:bg-slate-800 rounded mt-1.5 overflow-hidden">
-                    <div className="h-full bg-emerald-500 rounded" style={{ width: `${Math.round((init.achieved / Number(init.target.replace(/[^0-9]/g, ''))) * 100)}%` }} />
+                    <div className="h-full bg-emerald-500 rounded" style={{ width: `${init.baselineCost > 0 ? Math.round((init.amount / (init.baselineCost - init.negotiatedCost || 1)) * 100) : 100}%` }} />
                   </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
-      )}
-
-      {/* CREATE SAVINGS INITIATIVE MODAL */}
-      {initOpen && (
-        <>
-          <div className="fixed inset-0 z-40 bg-black/45 backdrop-blur-sm" onClick={() => setInitOpen(false)} />
-          <div className="fixed top-24 left-1/2 -translate-x-1/2 w-full max-w-[420px] bg-white dark:bg-[#161B27] border border-gray-250 dark:border-gray-833 rounded-md p-6 shadow-2xl z-50 flex flex-col font-sans">
-            <div className="flex justify-between items-center pb-3 border-b mb-4 flex-shrink-0">
-              <h2 className="text-sm font-black text-gray-955 dark:text-white uppercase">Register Cost Saving Initiative</h2>
-              <button onClick={() => setInitOpen(false)} className="text-gray-450 hover:text-gray-901 font-serif text-lg leading-none">&times;</button>
-            </div>
-
-            <form onSubmit={handleCreateInitiative} className="space-y-4 text-xs font-sans">
-              <div className="flex flex-col space-y-1">
-                <label className="font-bold text-gray-450 uppercase text-[10.5px]">Negotiated Agreement Initiative Title</label>
-                <input
-                  required
-                  type="text"
-                  placeholder="e.g. AWS reserved instance consolidation discount"
-                  className="h-[36px] bg-transparent border dark:border-[#1F2937] outline-none px-2 rounded focus:border-blue-500 text-gray-805 dark:text-white"
-                  value={initName}
-                  onChange={(e) => setInitName(e.target.value)}
-                />
-              </div>
-
-              <div className="flex flex-col space-y-1">
-                <label className="font-bold text-gray-450 uppercase text-[10.5px]">Target Savings quota Amount ($)</label>
-                <input
-                  required
-                  type="number"
-                  className="h-[36px] bg-transparent border dark:border-[#1F2937] outline-none px-2 rounded text-gray-805 dark:text-white"
-                  value={initSavings}
-                  onChange={(e) => setInitSavings(Number(e.target.value))}
-                />
-              </div>
-
-              <div className="border-t pt-4 flex justify-end gap-2 pr-1 font-semibold">
-                <button
-                  type="button"
-                  onClick={() => setInitOpen(false)}
-                  className="px-4 py-2 border rounded hover:bg-gray-50"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white font-bold rounded"
-                >
-                  Launch Initiative
-                </button>
-              </div>
-            </form>
-          </div>
-        </>
       )}
     </div>
   );

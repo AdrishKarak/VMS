@@ -286,3 +286,31 @@ export interface RFQ {
     isAwarded?: boolean;
   }[];
 }
+
+export interface BatchPayment {
+  id: string;
+  name: string;
+  paymentMethod: 'Bank Transfer' | 'ACH' | 'Wire' | 'Check';
+  scheduledDate: string;
+  invoiceRefs: string[];
+  totalAmount: number;
+  vendorCount: number;
+  status: 'Pending Approval' | 'Processing' | 'Completed' | 'Failed';
+  createdAt: string;
+}
+
+export interface RegistryItem {
+  code: string;
+  sku: string;
+  name: string;
+  category: string;
+  preferredVendor: string;
+  unit: string;
+  unitPrice: number;
+  stockClass: 'Critical' | 'Standard' | 'Strategic' | 'Tail Spend';
+  stockLevel: number;
+  minStock: number;
+  leadTime: string;
+}
+
+

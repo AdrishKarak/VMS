@@ -11,7 +11,9 @@ import {
   Payment,
   SavingsInitiative,
   CalendarEvent,
-  RFQ
+  RFQ,
+  BatchPayment,
+  RegistryItem
 } from './types';
 import {
   mockVendors as initialVendors,
@@ -25,7 +27,9 @@ import {
   mockPayments as initialPayments,
   mockSavingsInitiatives as initialSavingsInitiatives,
   mockCalendarEvents as initialCalendarEvents,
-  mockRFQs as initialRFQs
+  mockRFQs as initialRFQs,
+  mockBatchPayments as initialBatchPayments,
+  mockRegistryItems as initialRegistryItems
 } from './mockData';
 
 export type CurrentPage =
@@ -33,7 +37,10 @@ export type CurrentPage =
   | 'vendors'
   | 'vendor-detail'
   | 'onboarding'
+  | 'batch-payments'
+
   | 'performance'
+  | 'items-registry'
   | 'purchase-orders'
   | 'rfq'
   | 'contracts'
@@ -87,12 +94,16 @@ interface VMSContextType {
   setActivityLogs: React.Dispatch<React.SetStateAction<ActivityLog[]>>;
   payments: Payment[];
   setPayments: React.Dispatch<React.SetStateAction<Payment[]>>;
+  batchPayments: BatchPayment[];
+  setBatchPayments: React.Dispatch<React.SetStateAction<BatchPayment[]>>;
   savingsInitiatives: SavingsInitiative[];
   setSavingsInitiatives: React.Dispatch<React.SetStateAction<SavingsInitiative[]>>;
   calendarEvents: CalendarEvent[];
   setCalendarEvents: React.Dispatch<React.SetStateAction<CalendarEvent[]>>;
   rfqs: RFQ[];
   setRfqs: React.Dispatch<React.SetStateAction<RFQ[]>>;
+  itemsRegistry: RegistryItem[];
+  setItemsRegistry: React.Dispatch<React.SetStateAction<RegistryItem[]>>;
 
   // Actions
   addVendor: (vendor: Omit<Vendor, 'id'>) => Vendor;
@@ -110,6 +121,8 @@ interface VMSContextType {
   addUser: (user: Omit<User, 'id'>) => User;
   addActivityLog: (module: string, action: string, entityId: string, description: string, status?: 'Success' | 'Failed') => void;
   addPayment: (payment: Omit<Payment, 'id'>) => Payment;
+  addBatchPayment: (batch: Omit<BatchPayment, 'id' | 'createdAt' | 'status'>) => BatchPayment;
+  updateBatchStatus: (id: string, status: BatchPayment['status']) => void;
   addSavingsInitiative: (init: Omit<SavingsInitiative, 'id'>) => SavingsInitiative;
   addCalendarEvent: (evt: Omit<CalendarEvent, 'id'>) => CalendarEvent;
   addRFQ: (rfq: Omit<RFQ, 'id'>) => RFQ;
@@ -153,9 +166,11 @@ export const VMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [users, setUsers] = useState<User[]>(initialUsers);
   const [activityLogs, setActivityLogs] = useState<ActivityLog[]>(initialActivityLogs);
   const [payments, setPayments] = useState<Payment[]>(initialPayments);
+  const [batchPayments, setBatchPayments] = useState<BatchPayment[]>(initialBatchPayments);
   const [savingsInitiatives, setSavingsInitiatives] = useState<SavingsInitiative[]>(initialSavingsInitiatives);
   const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>(initialCalendarEvents);
   const [rfqs, setRfqs] = useState<RFQ[]>(initialRFQs);
+  const [itemsRegistry, setItemsRegistry] = useState<RegistryItem[]>(initialRegistryItems);
 
   const [comparedVendors, setComparedVendors] = useState<string[]>([]);
   const [cmdPaletteOpen, setCmdPaletteOpen] = useState(false);
@@ -338,6 +353,39 @@ export const VMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return newPayment;
   };
 
+  const addBatchPayment = (batchData: Omit<BatchPayment, 'id' | 'createdAt' | 'status'>): BatchPayment => {
+    const newId = `BAT-2026-${(1001 + batchPayments.length).toString().substring(1)}`;
+    const newBatch: BatchPayment = {
+      ...batchData,
+      id: newId,
+      status: 'Pending Approval',
+      createdAt: new Date().toISOString().split('T')[0]
+    };
+    setBatchPayments((prev) => [newBatch, ...prev]);
+
+    // Update selected invoices status to Paid
+    setInvoices(iPrev => iPrev.map(inv => newBatch.invoiceRefs.includes(inv.id) ? { ...inv, status: 'Paid', paymentStatus: 'Paid' } : inv));
+
+    addActivityLogInternal('Finance', 'Batch Payment Scheduled', newId, `Scheduled batch clearance voucher for ${newBatch.invoiceRefs.length} invoices.`);
+    addToast('success', 'Batch Payment Created', `Batch payment ${newId} with amount $${newBatch.totalAmount.toLocaleString()} has been scheduled.`);
+    return newBatch;
+  };
+
+  const updateBatchStatus = (id: string, status: BatchPayment['status']) => {
+    setBatchPayments(prev => prev.map(batch => batch.id === id ? { ...batch, status } : batch));
+    
+    // If completed or processing, we make sure the related invoices are marked accordingly
+    if (status === 'Completed') {
+      const batch = batchPayments.find(b => b.id === id);
+      if (batch) {
+        setInvoices(iPrev => iPrev.map(inv => batch.invoiceRefs.includes(inv.id) ? { ...inv, status: 'Paid', paymentStatus: 'Paid' } : inv));
+      }
+    }
+
+    addActivityLogInternal('Finance', 'Batch Status Updated', id, `Updated batch status to ${status}.`);
+    addToast('info', 'Batch Status Updated', `Batch payment ${id} updated to ${status}.`);
+  };
+
   const addSavingsInitiative = (initData: Omit<SavingsInitiative, 'id'>): SavingsInitiative => {
     const newId = `SAV-${(101 + savingsInitiatives.length).toString().substring(1)}`;
     const newInit: SavingsInitiative = { ...initData, id: newId };
@@ -396,12 +444,16 @@ export const VMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setActivityLogs,
       payments,
       setPayments,
+      batchPayments,
+      setBatchPayments,
       savingsInitiatives,
       setSavingsInitiatives,
       calendarEvents,
       setCalendarEvents,
       rfqs,
       setRfqs,
+      itemsRegistry,
+      setItemsRegistry,
       addVendor,
       updateVendor,
       removeVendor,
@@ -417,6 +469,8 @@ export const VMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       addUser,
       addActivityLog: addActivityLogInternal,
       addPayment,
+      addBatchPayment,
+      updateBatchStatus,
       addSavingsInitiative,
       addCalendarEvent,
       addRFQ,
@@ -447,9 +501,11 @@ export const VMSProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       users,
       activityLogs,
       payments,
+      batchPayments,
       savingsInitiatives,
       calendarEvents,
       rfqs,
+      itemsRegistry,
       comparedVendors,
       cmdPaletteOpen,
       darkMode,

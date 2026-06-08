@@ -128,7 +128,7 @@ export const VendorDetail: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 font-sans">
+    <div className="pt-14 space-y-6 font-sans">
       {/* Top Breadcrumb Navigation Trigger */}
       <div className="flex items-center justify-between">
         <button

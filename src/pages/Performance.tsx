@@ -79,7 +79,7 @@ export const Performance: React.FC = () => {
   }, [selectedAuditId, vendors]);
 
   return (
-    <div className="space-y-6 font-sans">
+    <div className="pt-14 space-y-6 font-sans">
       {/* Top filter select header card */}
       <div className="bg-white dark:bg-[#161B27] border rounded-md p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm">
         <div>

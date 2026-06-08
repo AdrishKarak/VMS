@@ -11,8 +11,10 @@ import {
   Payment,
   SavingsInitiative,
   CalendarEvent,
-  RFQ
+  RFQ,
+  BatchPayment
 } from './types';
+
 
 // Categories color mappings
 export const CATEGORY_COLORS: Record<string, { bg: string; text: string; dot: string }> = {
@@ -766,3 +768,51 @@ export const priceVarianceData = [
   { month: 'Nov', variance: -2.0 },
   { month: 'Dec', variance: -2.1 }
 ];
+
+export const mockBatchPayments: BatchPayment[] = [
+  {
+    id: 'BAT-2026-001',
+    name: 'Hardware Supplier Consolidation Clearing',
+    paymentMethod: 'ACH',
+    scheduledDate: '2026-06-10',
+    invoiceRefs: ['INV-2026-001', 'INV-2026-005', 'INV-2026-009'],
+    totalAmount: 18450.00,
+    vendorCount: 2,
+    status: 'Pending Approval',
+    createdAt: '2026-06-08'
+  },
+  {
+    id: 'BAT-2026-002',
+    name: 'Q2 Office Logistics Clearing',
+    paymentMethod: 'Wire',
+    scheduledDate: '2026-06-12',
+    invoiceRefs: ['INV-2026-002', 'INV-2026-006'],
+    totalAmount: 34200.00,
+    vendorCount: 1,
+    status: 'Processing',
+    createdAt: '2026-06-07'
+  },
+  {
+    id: 'BAT-2026-003',
+    name: 'Spring IT Services Clearing',
+    paymentMethod: 'Bank Transfer',
+    scheduledDate: '2026-06-05',
+    invoiceRefs: ['INV-2026-003', 'INV-2026-004', 'INV-2026-007', 'INV-2026-008'],
+    totalAmount: 56900.00,
+    vendorCount: 3,
+    status: 'Completed',
+    createdAt: '2026-06-01'
+  }
+];
+
+export const mockRegistryItems: RegistryItem[] = [
+  { code: 'ITM-1001', name: 'Industrial IoT gateway kit', category: 'Manufacturing', preferredVendor: 'Apex Industrial Supplies', unit: 'Kit', unitPrice: 1280, stockClass: 'Critical', leadTime: '14 days', stockLevel: 100, minStock: 20 },
+  { code: 'ITM-1002', name: 'SOC2 managed audit bundle', category: 'Technology', preferredVendor: 'Nimbus Cloud Systems', unit: 'Bundle', unitPrice: 8450, stockClass: 'Strategic', leadTime: '21 days', stockLevel: 150, minStock: 10 },
+  { code: 'ITM-1003', name: 'Cold-chain packing sensors', category: 'Logistics', preferredVendor: 'Vertex Freight Partners', unit: 'Case', unitPrice: 420, stockClass: 'Standard', leadTime: '9 days', stockLevel: 80, minStock: 15 },
+  { code: 'ITM-1004', name: 'Executive legal review hours', category: 'Legal', preferredVendor: 'Summit Legal Group', unit: 'Hour', unitPrice: 360, stockClass: 'Strategic', leadTime: '5 days', stockLevel: 200, minStock: 50 },
+  { code: 'ITM-1005', name: 'Safety inspection consumables', category: 'Facilities', preferredVendor: 'Harbor Safety Co.', unit: 'Pack', unitPrice: 96, stockClass: 'Standard', leadTime: '7 days', stockLevel: 120, minStock: 20 },
+  { code: 'ITM-1006', name: 'ERP connector support block', category: 'Software', preferredVendor: 'Oracle ERP cloud link', unit: 'Block', unitPrice: 2750, stockClass: 'Strategic', leadTime: '10 days', stockLevel: 50, minStock: 5 },
+  { code: 'ITM-1007', name: 'Warehouse scanner batteries', category: 'Operations', preferredVendor: 'Apex Industrial Supplies', unit: 'Unit', unitPrice: 68, stockClass: 'Tail Spend', leadTime: '4 days', stockLevel: 140, minStock: 30 }
+];
+
+

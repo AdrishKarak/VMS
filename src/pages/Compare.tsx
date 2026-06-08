@@ -42,7 +42,7 @@ export const Compare: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 font-sans">
+    <div className="pt-14 space-y-6 font-sans">
       {/* Upper controls banner card */}
       <div className="bg-white dark:bg-[#161B27] p-4 rounded-md border border-gray-200 dark:border-gray-803 shadow-sm flex items-center justify-between flex-wrap gap-4">
         <div>

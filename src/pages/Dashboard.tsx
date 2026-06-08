@@ -177,7 +177,7 @@ export const Dashboard: React.FC = () => {
     .slice(0, 6);
 
   return (
-    <div className="space-y-6 font-sans">
+    <div className="pt-14 space-y-6 font-sans">
       {/* 1. TOP KPI CARDS ROW */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         {/* Card 1: Total Vendors */}
@@ -363,59 +363,9 @@ export const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* 3. THIRD ROW: Top Performing Vendors | Recent POs | Renewals Due */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        {/* Panel A: Top Scoring Vendors */}
-        <div className="bg-white dark:bg-[#161B27] p-5 rounded-md border border-gray-200 dark:border-gray-800/80 shadow-sm flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between mb-3 border-b border-gray-150 dark:border-gray-800 pb-2">
-              <h3 className="text-[14px] font-semibold text-gray-950 dark:text-slate-200 font-sans uppercase tracking-wide">Top Vendors by Score</h3>
-              <button onClick={() => setCurrentPage('performance')} className="text-xs text-blue-600 dark:text-blue-400 hover:underline">
-                View All &rarr;
-              </button>
-            </div>
-            <div className="space-y-2.5 max-h-[280px] overflow-y-auto">
-              {topVendorsByScore.map((v, i) => (
-                <div
-                  key={v.id}
-                  onClick={() => {
-                    setSelectedVendorId(v.id);
-                    setCurrentPage('vendor-detail');
-                  }}
-                  className="flex items-center justify-between p-2 rounded hover:bg-gray-50 dark:hover:bg-slate-800/40 cursor-pointer transition"
-                >
-                  <div className="flex items-center gap-2.5 overflow-hidden">
-                    <span className="text-xs font-bold text-gray-400 w-4">#{i + 1}</span>
-                    <div className="w-8 h-8 rounded-full bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-[11px] flex-shrink-0">
-                      {v.logoInitials}
-                    </div>
-                    <div className="overflow-hidden min-w-0">
-                      <span className="font-bold text-gray-900 dark:text-white block text-[13px] truncate leading-tight">
-                        {v.name}
-                      </span>
-                      <span className="text-[10px] text-gray-500 dark:text-slate-500 block leading-none truncate mt-1">
-                        {v.category}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-[80px] h-1.5 bg-gray-150 dark:bg-slate-800 rounded overflow-hidden">
-                      <div
-                        className="h-full bg-emerald-500"
-                        style={{ width: `${v.performanceScore}%` }}
-                      />
-                    </div>
-                    <span className="text-[12px] font-bold text-emerald-600 dark:text-emerald-400 font-mono">
-                      {v.performanceScore}/100
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Panel B: Recent Purchase Orders */}
+      {/* 3. THIRD ROW: Recent POs | Renewals Due */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        {/* Panel A: Recent Purchase Orders */}
         <div className="bg-white dark:bg-[#161B27] p-5 rounded-md border border-gray-200 dark:border-gray-800/80 shadow-sm flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-2 border-b border-gray-150 dark:border-gray-800 pb-2">
@@ -518,79 +468,7 @@ export const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* 4. FOURTH ROW: Risk Heatmap Matrix */}
-      <div className="bg-white dark:bg-[#161B27] p-6 rounded-md border border-gray-200 dark:border-gray-800/80 shadow-sm">
-        <div className="flex items-center justify-between mb-4 border-b border-gray-150 dark:border-gray-800 pb-2">
-          <div>
-            <h3 className="text-[15px] font-semibold text-gray-950 dark:text-slate-200 font-sans uppercase tracking-wide">
-              Risk Heatmap by Vendor Tier
-            </h3>
-            <span className="text-xs text-gray-400 dark:text-slate-500 font-sans leading-none block mt-1">
-              Evaluated financial, cybersecurity, geopolitical and compliance factors across operational quadrants.
-            </span>
-          </div>
-          <button onClick={() => setCurrentPage('risk')} className="text-xs text-blue-600 dark:text-blue-400 hover:underline">
-            Compliance matrix &rarr;
-          </button>
-        </div>
-
-        {/* 5x3 Grid */}
-        <div className="overflow-x-auto">
-          <div className="min-w-[650px] space-y-2">
-            {/* Headers row */}
-            <div className="grid grid-cols-6 gap-2 text-center text-[10px] uppercase font-bold text-gray-400 dark:text-slate-500 font-sans">
-              <span className="text-left py-1 capitalize">Quadrant Nodes</span>
-              <span className="py-1">Financial Risk</span>
-              <span className="py-1">Compliance Risk</span>
-              <span className="py-1">Operational Risk</span>
-              <span className="py-1">Cybersecurity Risk</span>
-              <span className="py-1">Geopolitical Risk</span>
-            </div>
-
-            {/* Rows */}
-            {['Tier 1', 'Tier 2', 'Tier 3'].map((tier) => (
-              <div key={tier} className="grid grid-cols-6 gap-2 items-center">
-                <span className="text-xs font-bold text-gray-900 dark:text-white capitalize font-sans">{tier}</span>
-                {riskHeatmap
-                  .filter((item) => item.row === tier)
-                  .map((cell, idx) => (
-                    <div
-                      key={idx}
-                      className={`p-3.5 rounded-sm flex flex-col items-center justify-center ${getHeatmapColor(
-                        cell.level
-                      )}`}
-                    >
-                      <span className="font-roboto font-extrabold text-[15px]">{cell.score}</span>
-                      <span className="text-[9px] uppercase tracking-wider font-semibold opacity-80 mt-0.5">
-                        {cell.level}
-                      </span>
-                    </div>
-                  ))}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Heatmap Legend */}
-        <div className="flex items-center gap-4 mt-4 justify-end text-[11px] text-gray-400 dark:text-slate-500 font-sans select-none">
-          <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded bg-emerald-100/70 border dark:bg-emerald-950/20" />
-            <span>Low Risk (0-2)</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded bg-amber-100/70 border dark:bg-amber-950/20" />
-            <span>Medium Risk (2-3)</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded bg-orange-100/70 border dark:bg-orange-950/20" />
-            <span>High Risk (3-4)</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded bg-red-100 border dark:bg-red-950/40" />
-            <span>Critical Risk (4-5)</span>
-          </div>
-        </div>
-      </div>
+      
 
       {/* Dynamic GitHub Contributions Grid */}
       {(() => {
@@ -845,17 +723,7 @@ export const Dashboard: React.FC = () => {
               <span className="text-[11.5px] font-semibold text-emerald-700 dark:text-emerald-300 font-sans leading-none">Create PO</span>
             </button>
 
-            {/* Generate RFQ */}
-            <button
-              onClick={() => {
-                setCurrentPage('rfq');
-                addToast('info', 'RFQ Action Triggered', 'Launched RFQ sourcing tender wizard.');
-              }}
-              className="h-[80px] border border-cyan-100 hover:border-cyan-400 dark:border-slate-800/80 bg-cyan-50/10 hover:bg-cyan-50/30 dark:bg-slate-900/10 dark:hover:bg-slate-800/40 rounded flex flex-col items-center justify-center transition p-2 cursor-pointer gap-1.5 group"
-            >
-              <FileSearch className="w-5 h-5 text-cyan-600 dark:text-cyan-400 group-hover:scale-105 transition" />
-              <span className="text-[11.5px] font-semibold text-cyan-700 dark:text-cyan-300 font-sans leading-none">Generate RFQ</span>
-            </button>
+            {/* RFQ button removed per request */}
 
             {/* Upload Document */}
             <button

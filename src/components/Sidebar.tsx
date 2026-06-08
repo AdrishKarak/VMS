@@ -7,6 +7,7 @@ import {
   BarChart3,
   Star,
   ShoppingCart,
+  PackageSearch,
   FileSearch,
   FileText,
   Receipt,
@@ -24,7 +25,8 @@ import {
   Leaf,
   LogOut,
   Hexagon,
-  ChevronRight
+  ChevronRight,
+  Layers
 } from 'lucide-react';
 
 interface NavItemProps {
@@ -50,15 +52,14 @@ export const Sidebar: React.FC = () => {
         { page: 'vendors', icon: Building2, label: 'Vendor Directory' },
         { page: 'compare', icon: GitCompare, label: `Compare Vendors ${comparedVendors.length > 0 ? `(${comparedVendors.length})` : ''}` },
         { page: 'onboarding', icon: UserPlus, label: 'Onboarding' },
-        { page: 'performance', icon: BarChart3, label: 'Performance' },
-        { page: 'esg', icon: Leaf, label: 'ESG Scorecard' }
+        { page: 'performance', icon: BarChart3, label: 'Performance' }
       ]
     },
     {
       title: 'PROCUREMENT',
       items: [
+        { page: 'items-registry', icon: PackageSearch, label: 'Items Registry' },
         { page: 'purchase-orders', icon: ShoppingCart, label: 'Purchase Orders' },
-        { page: 'rfq', icon: FileSearch, label: 'RFQ / Sourcing' },
         { page: 'contracts', icon: FileText, label: 'Contracts' },
         { page: 'invoices', icon: Receipt, label: 'Invoices' }
       ]
@@ -66,24 +67,15 @@ export const Sidebar: React.FC = () => {
     {
       title: 'COMPLIANCE & RISK',
       items: [
-        { page: 'risk', icon: ShieldAlert, label: 'Risk Assessment' },
-        { page: 'compliance', icon: FolderLock, label: 'Compliance Documents' },
-        { page: 'audit-logs', icon: ClipboardList, label: 'Audit Logs' }
+        { page: 'risk', icon: ShieldAlert, label: 'Risk Assessment' }
       ]
     },
     {
       title: 'FINANCE',
       items: [
         { page: 'payments', icon: Wallet, label: 'Payments' },
-        { page: 'savings', icon: PiggyBank, label: 'Savings Tracker' },
+        { page: 'batch-payments', icon: Layers, label: 'Batch Payment' },
         { page: 'spend-analytics', icon: TrendingUp, label: 'Spend Analytics' }
-      ]
-    },
-    {
-      title: 'ADMINISTRATION',
-      items: [
-        { page: 'users', icon: Users, label: 'User Management' },
-        { page: 'settings', icon: Settings, label: 'Settings' }
       ]
     }
   ];
